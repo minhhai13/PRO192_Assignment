@@ -15,6 +15,7 @@ public abstract class Item {
     protected List<String> images;
     protected String desc;
 
+    // Khởi tạo ArrayList sẵn
     public Item() {
         authorIds = new ArrayList<>();
         awards = new ArrayList<>();
@@ -35,6 +36,26 @@ public abstract class Item {
         this.desc = desc;
     }
 
+    @Override
+    public String toString() {
+        return "\n\tid='" + id
+                + "'\n\tname='" + name
+                + "'\n\tcategory='" + category
+                + "'\n\tmaterial='" + material
+                + "'\n\tinPrice=" + inPrice
+                + "'\n\tprice=" + price
+                + "'\n\tauthorIds=" + authorIds
+                + "'\n\tyearOfRelease=" + yearOfRelease
+                + "'\n\tawards=" + awards
+                + "'\n\timages=" + images
+                + "'\n\tdesc='" + desc;
+    }
+
+    public abstract void input();
+
+    public abstract void output();
+
+    // Getter & Setter
     public String getId() {
         return id;
     }
@@ -122,24 +143,5 @@ public abstract class Item {
     public void setDesc(String desc) {
         this.desc = desc;
     }
-
-    @Override
-    public String toString() {
-        return "\n\tid='" + id
-                + "'\n\tname='" + name
-                + "'\n\tcategory='" + category
-                + "'\n\tmaterial='" + material
-                + "'\n\tinPrice=" + inPrice
-                + "'\n\tprice=" + price
-                + "'\n\tauthorIds=" + authorIds
-                + "'\n\tyearOfRelease=" + yearOfRelease
-                + "'\n\tawards=" + awards
-                + "'\n\timages=" + images
-                + "'\n\tdesc='" + desc;
-    }
-
-    public abstract void input();
-
-    public abstract void output();
 
 }
