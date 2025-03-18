@@ -6,7 +6,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -18,105 +17,7 @@ public class ItemList extends ArrayList<Item> {
 
     public ItemList() {
         super();
-        generateRandomItems(50);
-    }
-
-    // Phương thức sinh ngẫu nhiên các sản phẩm
-    private void generateRandomItems(int n) {
-        Random rand = new Random();
-        for (int i = 0; i < n; i++) {
-            if (rand.nextBoolean()) {
-                // Tạo TeaPot ngẫu nhiên
-                TeaPot tp = new TeaPot();
-                tp.setId("TP" + (i + 1));
-                tp.setName("TeaPot " + (i + 1));
-                tp.setCategory(getRandomTeaCategory(rand));
-                tp.setMaterial(getRandomTeaMaterial(rand));
-                tp.setInPrice(100 + rand.nextInt(1000));
-                tp.setPrice(tp.getInPrice() + rand.nextInt(500));
-                tp.setYearOfRelease(1900 + rand.nextInt(125));
-                List<Integer> authors = new ArrayList<>();
-                int authorCount = 1 + rand.nextInt(5);
-                for (int j = 0; j < authorCount; j++) {
-                    authors.add(rand.nextInt(10) + 1);
-                }
-                tp.setAuthorIds(authors);
-
-                int awardCount = rand.nextInt(4);
-                List<String> awardsList = new ArrayList<>();
-                for (int j = 0; j < awardCount; j++) {
-                    awardsList.add("Award" + (rand.nextInt(5) + 1));
-                }
-                tp.setAwards(awardsList);
-
-                int imageCount = 1 + rand.nextInt(3);
-                List<String> imagesList = new ArrayList<>();
-                for (int j = 0; j < imageCount; j++) {
-                    imagesList.add("http://example.com/image" + (i + 1) + "_" + (j + 1) + ".jpg");
-                }
-                tp.setImages(imagesList);
-
-                tp.setDesc("Description of TeaPot " + (i + 1));
-                tp.setVolume(100 + rand.nextInt(300));
-                this.add(tp);
-            } else {
-                // Tạo Rod ngẫu nhiên
-                Rod rod = new Rod();
-                rod.setId("RD" + (i + 1));
-                rod.setName("Rod " + (i + 1));
-                rod.setCategory(getRandomRodCategory(rand));
-                rod.setMaterial(getRandomRodMaterial(rand));
-                rod.setInPrice(50 + rand.nextInt(500));
-                rod.setPrice(rod.getInPrice() + rand.nextInt(300));
-                rod.setYearOfRelease(2000 + rand.nextInt(25));
-
-                int authorCount = rand.nextInt(5) + 1;
-                List<String> authors = new ArrayList<>();
-                for (int j = 0; j < authorCount; j++) {
-                    authors.add("Factory" + (rand.nextInt(10) + 1));
-                }
-                rod.setAuthorIds(authors);
-
-                int awardCount = rand.nextInt(3) + 1;
-                List<String> awards = new ArrayList<>();
-                for (int j = 0; j < awardCount; j++) {
-                    awards.add("Award" + (rand.nextInt(5) + 1));
-                }
-                rod.setAwards(awards);
-
-                int imageCount = rand.nextInt(3) + 1;
-                List<String> images = new ArrayList<>();
-                for (int j = 0; j < imageCount; j++) {
-                    images.add("http://example.com/rod_image" + (i + 1) + "_" + (j + 1) + ".jpg");
-                }
-                rod.setImages(images);
-
-                rod.setDesc("Description of Rod " + (i + 1));
-                rod.setLength(2.0 + rand.nextDouble() * 8.0);
-                this.add(rod);
-            }
-        }
-    }
-
-    // Một số hàm trợ giúp để chọn ngẫu nhiên dữ liệu cho TeaPot và Rod
-    private String getRandomTeaCategory(Random rand) {
-        String[] categories = {"Ấm sứ", "Ấm đất", "Ấm thủy tinh", "Ấm pha lê", "Ấm sắt", "Ấm bạc"};
-        return categories[rand.nextInt(categories.length)];
-    }
-
-    private String getRandomTeaMaterial(Random rand) {
-        String[] materials = {"Đất tử sa", "Sứ Bát Tràng", "Sứ Nhật", "Sứ Cảnh Đức", "Đất nâu", "Đất đỏ"};
-        return materials[rand.nextInt(materials.length)];
-    }
-
-    private String getRandomRodCategory(Random rand) {
-        String[] categories = {"Cần câu máy", "Cần câu tay"};
-        return categories[rand.nextInt(categories.length)];
-    }
-
-    private String getRandomRodMaterial(Random rand) {
-        String[] materials = {"Carbon", "Sợi thuỷ tinh", "Kim loại"};
-        return materials[rand.nextInt(materials.length)];
+        this.addAll(RandomItemGenerator.generate(50));
     }
 
     // Thêm 1 sản phẩm vào danh sách
