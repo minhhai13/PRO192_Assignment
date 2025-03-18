@@ -69,7 +69,7 @@ public class YixingShop {
                         int productType = Integer.parseInt(sc.nextLine().trim());
                         if (productType == 1) {
                             System.out.print("Enter Artisan ID: ");
-                            int authorId = Integer.parseInt(sc.nextLine().trim());
+                            String authorId = sc.nextLine().trim();
                             List<Item> teaResults = itemList.searchByAuthor(authorId);
                             System.out.println("Search results for Artisan ID " + authorId + ":");
                             for (Item item : teaResults) {

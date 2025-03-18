@@ -29,7 +29,7 @@ public class RandomItemGenerator {
         tp.setInPrice(100 + rand.nextInt(1000));
         tp.setPrice(tp.getInPrice() + rand.nextInt(500));
         tp.setYearOfRelease(1900 + rand.nextInt(125));
-        tp.setAuthorIds(generateRandomAuthorIds(1 + rand.nextInt(5)));
+        tp.setAuthorIds(generateRandomAuthorIds(rand.nextInt(5) + 1));
         tp.setAwards(generateRandomAwards(rand.nextInt(4)));
         tp.setImages(generateImages(index, 1 + rand.nextInt(3), "image"));
         tp.setDesc("Description of TeaPot " + (index + 1));
@@ -75,13 +75,15 @@ public class RandomItemGenerator {
     }
 
     private static List<Integer> generateRandomAuthorIds(int count) {
-        return rand.ints(count, 1, 11).boxed().collect(Collectors.toList());
+        return rand.ints(count, 1, 11)
+                    .mapToObj(i -> "AUTH" + i)
+                    .collect(Collectors.toList());
     }
 
     private static List<String> generateFactoryIds(int count) {
         return rand.ints(count, 1, 11)
-                .mapToObj(i -> "Factory" + i)
-                .collect(Collectors.toList());
+                    .mapToObj(i -> "Factory" + i)
+                    .collect(Collectors.toList());
     }
 
     private static List<String> generateRandomAwards(int count) {

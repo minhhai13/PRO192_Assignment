@@ -36,13 +36,13 @@ public class ItemList extends ArrayList<Item> {
     }
 
     // Tìm kiếm sản phẩm theo tên nghệ nhân/nhà máy (kiểm tra nếu chuỗi tìm kiếm nằm trong bất kỳ phần tử nào của authorIds)
-    public List<Item> searchByAuthor(int author) {
+    public List<Item> searchByAuthor(String author) {
         List<Item> results = new ArrayList<>();
         for (Item item : this) {
             if (item instanceof TeaPot) {
                 TeaPot teapot = (TeaPot) item;
-                for (int auth : teapot.getAuthorIds()) {
-                    if (auth == author) {
+                for (String auth : teapot.getAuthorIds()) {
+                    if (auth.equalsIgnoreCase(author)) {
                         results.add(item);
                         break;
                     }
@@ -113,11 +113,9 @@ public class ItemList extends ArrayList<Item> {
                         tp.setDesc(parts[10]);
                         tp.setVolume(Integer.parseInt(parts[11]));
                         // Xử lý danh sách authorIds (kiểu Integer)
-                        List<Integer> authorIds = Arrays.stream(parts[12].split(";"))
-                                .filter(s -> !s.isEmpty())
-                                .map(Integer::parseInt)
-                                .collect(Collectors.toList());
-                        tp.setAuthorIds(authorIds);
+                        tp.setAuthorIds(Arrays.stream(parts[12].split(";"))
+                                    .filter(s -> !s.isEmpty())
+                                    .collect(Collectors.toList()));
                         this.add(tp);
                     } else if ("Rod".equals(type)) {
                         Rod rod = new Rod();
@@ -134,7 +132,9 @@ public class ItemList extends ArrayList<Item> {
                         rod.setDesc(parts[10]);
                         rod.setLength(Double.parseDouble(parts[11]));
                         // Xử lý danh sách authorIds (kiểu String)
-                        rod.setAuthorIds(Arrays.stream(parts[12].split(";")).filter(s -> !s.isEmpty()).collect(Collectors.toList()));
+                        rod.setAuthorIds(Arrays.stream(parts[12].split(";"))
+                                        .filter(s -> !s.isEmpty())
+                                        .collect(Collectors.toList()));
                         this.add(rod);
                     } else {
                         System.out.println("Invalid product type: " + type);
