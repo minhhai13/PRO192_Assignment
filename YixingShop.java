@@ -1,7 +1,7 @@
 package pro192_assignment_yixingshop;
 
 import model.*;
-import data.ItemList;
+import controller.ItemList;
 import java.util.List;
 import java.util.Scanner;
 
