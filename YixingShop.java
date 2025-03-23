@@ -1,4 +1,4 @@
-package pro192_assignment_yixingshop;
+package view;
 
 import model.*;
 import controller.ItemList;
@@ -37,20 +37,31 @@ public class YixingShop {
                 case 1:
                     TeaPot teaPot = new TeaPot();
                     System.out.println("Enter information for the teapot:");
-                    teaPot.input(sc);
+                    teaPot.input();
                     itemList.addItem(teaPot);
                     break;
                 case 2:
                     Rod rod = new Rod();
                     System.out.println("Enter information for the fishing rod:");
-                    rod.input(sc);
+                    rod.input();
                     itemList.addItem(rod);
                     break;
                 case 3:
-                    System.out.println("List of available products:");
+                    System.out.println("\nList of available products:");
+                    System.out.println(String.format(
+                            "%-8s | %-22s | %-17s | %-17s | %15s | %15s | %6s | %-27s | %-8s | %-50s",
+                            "ID", "Name", "Category", "Material", "In Price", "Price", "Year", "Author/Factory", "Vol/Len", "Description"
+                    ));
+                    System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
                     for (Item item : itemList) {
-                        System.out.println(item);
+                        if (item instanceof TeaPot) {
+                            System.out.println(((TeaPot) item).toTableRow());
+                        } else if (item instanceof Rod) {
+                            System.out.println(((Rod) item).toTableRow());
+                        }
                     }
+                    System.out.println();
                     break;
                 case 4:
                     itemList.sortItemsByPrice();
@@ -67,24 +78,28 @@ public class YixingShop {
                             + "2. Rod (Search by Factory Name)");
                     try {
                         int productType = Integer.parseInt(sc.nextLine().trim());
-                        if (productType == 1) {
-                            System.out.print("Enter Artisan ID: ");
-                            String authorId = sc.nextLine().trim();
-                            List<Item> teaResults = itemList.searchByAuthor(authorId);
-                            System.out.println("Search results for Artisan ID " + authorId + ":");
-                            for (Item item : teaResults) {
-                                System.out.println(item);
-                            }
-                        } else if (productType == 2) {
-                            System.out.print("Enter Factory Name: ");
-                            String factoryName = sc.nextLine().trim();
-                            List<Item> rodResults = itemList.searchByFactory(factoryName);
-                            System.out.println("Search results for Factory " + factoryName + ":");
-                            for (Item item : rodResults) {
-                                System.out.println(item);
-                            }
-                        } else {
-                            System.out.println("Invalid choice!");
+                        switch (productType) {
+                            case 1:
+                                System.out.print("Enter Artisan ID: ");
+                                String authorId = sc.nextLine().trim();
+                                List<Item> teaResults = itemList.searchByAuthor(authorId);
+                                System.out.println("Search results for Artisan ID " + authorId + ":");
+                                for (Item item : teaResults) {
+                                    System.out.println(item);
+                                }
+                                break;
+                            case 2:
+                                System.out.print("Enter Factory Name: ");
+                                String factoryName = sc.nextLine().trim();
+                                List<Item> rodResults = itemList.searchByFactory(factoryName);
+                                System.out.println("Search results for Factory " + factoryName + ":");
+                                for (Item item : rodResults) {
+                                    System.out.println(item);
+                                }
+                                break;
+                            default:
+                                System.out.println("Invalid choice!");
+                                break;
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Please enter 1 or 2 to select a product type!");
