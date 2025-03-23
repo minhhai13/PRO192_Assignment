@@ -3,16 +3,9 @@ package controller;
 import model.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author MinhHai
- */
 public class ItemList extends ArrayList<Item> {
 
     public ItemList() {
@@ -75,7 +68,7 @@ public class ItemList extends ArrayList<Item> {
             if (item.getId().equalsIgnoreCase(id)) {
                 System.out.println("Current product: " + item);
                 System.out.println("Enter new information:");
-                item.input(sc);
+                item.input();
                 found = true;
                 break;
             }
@@ -114,8 +107,9 @@ public class ItemList extends ArrayList<Item> {
                         tp.setVolume(Integer.parseInt(parts[11]));
                         // Xử lý danh sách authorIds (kiểu Integer)
                         tp.setAuthorIds(Arrays.stream(parts[12].split(";"))
-                                    .filter(s -> !s.isEmpty())
-                                    .collect(Collectors.toList()));
+                                .filter(s -> !s.isEmpty())
+                                .collect(Collectors.toList()));
+
                         this.add(tp);
                     } else if ("Rod".equals(type)) {
                         Rod rod = new Rod();
@@ -133,8 +127,8 @@ public class ItemList extends ArrayList<Item> {
                         rod.setLength(Double.parseDouble(parts[11]));
                         // Xử lý danh sách authorIds (kiểu String)
                         rod.setAuthorIds(Arrays.stream(parts[12].split(";"))
-                                        .filter(s -> !s.isEmpty())
-                                        .collect(Collectors.toList()));
+                                .filter(s -> !s.isEmpty())
+                                .collect(Collectors.toList()));
                         this.add(rod);
                     } else {
                         System.out.println("Invalid product type: " + type);
@@ -199,4 +193,3 @@ public class ItemList extends ArrayList<Item> {
         }
     }
 }
-//Da them IO
