@@ -66,7 +66,17 @@ public class ItemList extends ArrayList<Item> {
         boolean found = false;
         for (Item item : this) {
             if (item.getId().equalsIgnoreCase(id)) {
-                System.out.println("Current product: " + item);
+                System.out.println(String.format(
+                        "%-8s | %-22s | %-17s | %-17s | %15s | %15s | %6s | %-27s | %-8s | %-50s",
+                        "ID", "Name", "Category", "Material", "In Price", "Price", "Year", "Author/Factory", "Vol/Len", "Description"
+                ));
+                System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                if (item instanceof TeaPot) {
+                    System.out.println(((TeaPot) item));
+                } else if (item instanceof Rod) {
+                    System.out.println(((Rod) item));
+                }
+
                 System.out.println("Enter new information:");
                 item.input();
                 found = true;

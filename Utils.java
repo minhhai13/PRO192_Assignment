@@ -86,12 +86,47 @@ public class Utils {
                 if (year >= 1900) {
                     return year;
                 }
-                System.out.println("Year must greater than 1900 Please try again.");
+                System.out.println("Year must greater than 1900. Please try again.");
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input! Please enter an integer.");
             }
         }
     }
+    // Input choice 1 or 2 in Search
+    public static int inputProductType(String message) {
+        int productType;
+        while (true) {
+            try {
+                System.out.print(message);
+                productType = Integer.parseInt(sc.nextLine().trim());
+                if (productType == 1 || productType == 2) {
+                    return productType;
+                }
+                System.out.println("Value must be 1 or 2. Please try again.");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter an integer.");
+            }
+        }
+    }
+    
+     // Input choice
+    public static int inputChoice(String message) {
+        int choice;
+        while (true) {
+            try {
+                System.out.print(message);
+                choice = Integer.parseInt(sc.nextLine().trim());
+                if (choice >= 1 && choice <= 10) {
+                    return choice;
+                }
+                System.out.println("Input must be in (1-10). Please try again.");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter an number in (1-10).");
+            }
+        }
+    }
+    
+    
 
     // Input a list of strings
     public static List<String> inputStringList(String message) {
