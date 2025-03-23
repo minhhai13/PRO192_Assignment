@@ -8,166 +8,187 @@ public class RandomItemGenerator {
 
     private static Random rand = new Random();
 
-    // Danh sách tên ấm trà phổ biến
+    // Region: TeaPot Data
     private static final String[] TEAPOT_NAMES = {
-        "Tây Thi", "Thạch Biều", "Hán Ngoã", "Trúc Đoạn", "Cân Văn",
-        "Đề Lương", "Cung Đăng", "Liên Tử", "Tứ Phương", "Tần Quyền", "Đức Chung"
+        "Tây Thi", "Thạch Biều", "Hán Ngoã", "Trúc Đoạn", "Cân Văn", "Đề Lương",
+        "Cung Đăng", "Liên Tử", "Tứ Phương", "Tần Quyền", "Đức Chung", "Long Tuyền",
+        "Hồng Hồ", "Tử Sa Cổ", "Thiên Mệnh", "Ngọc Nữ", "Phượng Hoàng", "Lão Tử",
+        "Thiên Cơ", "Vũ Trụ", "Minh Nguyệt", "Hoa Sen", "Thần Long", "Bách Hợp"
     };
 
-    // Vật liệu làm ấm trà
+    private static final String[] TEAPOT_CATEGORIES = {
+        "Ấm Tử Sa", "Ấm Sứ", "Ấm Thủy Tinh", "Ấm Pha Lê", "Ấm đất", "Ấm Bạc",
+        "Ấm sắt", "Ấm Gốm"
+    };
+
     private static final String[] TEAPOT_MATERIALS = {
-        "Đất tử sa Tử Nê", "Đất tử sa Chu Nê", "Đất tử sa Đoàn Nê",
-        "Đất tử sa Đại Hồng Bào", "Đất tử sa Hắc Long Nê", "Sứ Bát Tràng",
-        "Sứ Nhật Bản", "Sứ Cảnh Đức Trấn", "Pha lê Tiệp Khắc", "Pha lê Pháp"
+        "Tử Nê", "Chu Nê", "Đoàn Nê", "Đại Hồng Bào", "Hắc Long Nê", "Lục Nê",
+        "Thiên Thanh Nê", "Sứ Bát Tràng", "sứ NHẬT", "Sứ Cảnh Đức Trấn", "Pha lê Tiệp Khắc",
+        "Pha lê Pháp", "Pha lê Tàu", "Gốm Shigaraki"
     };
 
-    // Danh sách nghệ nhân và vai trò
     private static final String[] ARTIST_NAMES = {
-        "Nguyễn Văn A", "Trần Thị B", "Lê Minh C", "Phạm Hồng D", "Hoàng Đức E"
+        "Cố Cảnh Châu", "Vương Ấu Quân", "Từ Hán Đường", "Lý Xương Hồng",
+        "Trần Quang Sinh", "Phan Hồng Phi", "Ngô Vân Long", "Trương Thủ Khiết",
+        "Lưu Bội Phân", "Chu Nghênh Xuân", "Từ Tú Quân", "Lý Tuyền Minh"
     };
+
     private static final String[] ARTIST_ROLES = {
-        "Tạo hình", "Trang trí", "Khắc hoạ", "Khảm vàng", "Nung ấm"
+        "Tạo hình chính", "Trang trí hoa văn", "Khắc thư pháp", "Khảm vàng/bạc",
+        "Nung ấm", "Chế tác nắp", "Điêu khắc rồng phượng", "Vẽ men màu",
+        "Chế tác vòi", "Thiết kế tổng thể", "Kiểm định chất lượng"
     };
 
-    // Giải thưởng cho ấm trà
     private static final String[] TEAPOT_AWARD_TEMPLATES = {
-        "Giải Nhất cấp tỉnh Nghi Hưng năm %d",
-        "Giải Nhì cuộc thi ấm trà đẹp quốc gia Trung Hoa năm %d",
-        "Giải Vàng Triển lãm Thủ công Mỹ nghệ châu Á %d"
+        "Giải Kim Tỉnh - Triển lãm Ấm Tử Sa Quốc tế %d",
+        "Huy chương Vàng Đấu giá Christie's %d",
+        "Giải Đặc biệt Triển lãm Thủ công Mỹ nghệ châu Á %d",
+        "Top 10 Ấm đẹp nhất Hội chợ Trà Đạo Kyoto %d",
+        "Giải Sáng tạo Nghệ thuật Đương đại Bắc Kinh %d"
+    };
+    // End Region: TeaPot Data
+
+    // Region: Rod Data
+    private static final String[] ROD_NAMES = {
+        "Cá Rô Vàng", "Trắm Đen Xuyên Thấu", "Giấc Mộng Trung Hoa", "Lâm Xung Hải Tặc",
+        "Hồng Kông Đại Lực", "Thần Câu Bá Vương", "Ngư Long Đao", "Hải Thần Phong Vân",
+        "Xích Bích Chiến Thần", "Độc Giác Tiên", "Thiên Ngoại Phi Tiên", "Long Vương Ngư Lôi"
     };
 
-    // Mô tả ấm trà theo tên
-    private static final Map<String, String> TEAPOT_DESCRIPTIONS = new HashMap<>();
+    private static final String[] ROD_CATEGORIES = {
+        "Cần máy nước ngọt", "Cần máy đại dương", "Cần tay truyền thống",
+        "Cần baitcasting", "Cần spinning", "Cần fly fishing",
+        "Cần surf fishing", "Cần ice fishing"
+    };
 
-    static {
-        TEAPOT_DESCRIPTIONS.put("Tây Thi", "Ấm Tử Sa Tây Thi dáng cong mềm mại như dáng đứng của Tây Thi, chất đất tử nê bóng mịn, dung tích 150ml. Lý tưởng pha trà ô long, giữ nhiệt tốt.");
-        TEAPOT_DESCRIPTIONS.put("Thạch Biều", "Ấm Thạch Biều dáng gáo đá mộc mạc, chất đất hồng nê, dung tích 200ml. Vòi ngắn, nước chảy mạnh, phù hợp trà Phổ Nhĩ.");
-        // Thêm mô tả cho các ấm khác...
+    private static final String[] ROD_MATERIALS = {
+        "Carbon 24T", "Carbon 36T", "Sợi thủy tinh composite",
+        "Graphite IM6", "Nanocarbon X-Treme", "Hợp kim nhôm siêu nhẹ",
+        "Sợi boron", "Kevlar-carbon mix"
+    };
+
+    private static final String[] ROD_FACTORIES = {
+        "YuFeng Master", "Daiwa Tournament", "Shimano Stella",
+        "Barfilon Gold Series", "MRT Titanium", "Abu Garcia Revo",
+        "Penfishing Toplux", "Megabass Orochi"
+    };
+
+    private static final String[] ROD_AWARD_TEMPLATES = {
+        "Vô địch World Fishing Championship %d",
+        "Giải Thiết kế Đột phá ICAST %d",
+        "Cần xuất sắc nhất giải CCTV Cup %d",
+        "Huy chương Vàng Hội chợ Thể thao Châu Á %d",
+        "Top 10 Cần câu tốt nhất theo Tạp chí Field & Stream %d"
+    };
+    // End Region: Rod Data
+
+    private static List<String> generateArtists(int count) {
+        Set<String> artists = new LinkedHashSet<>();
+        while (artists.size() < count) {
+            String name = ARTIST_NAMES[rand.nextInt(ARTIST_NAMES.length)];
+            String role = ARTIST_ROLES[rand.nextInt(ARTIST_ROLES.length)];
+            artists.add(name + " (" + role + ")");
+        }
+        return new ArrayList<>(artists);
     }
 
-    // Danh sách tên cần câu
-    private static final String[] ROD_NAMES = {
-        "Cá Rô", "Cá Chép", "Trắm Đen", "Giấc Mộng Trung Hoa", "Lâm Xung", "Hồng Kông Đại Lực"
-    };
+    private static List<String> generateAwards(String[] templates, int baseYear, int yearRange, int count) {
+        List<String> awards = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            int year = baseYear + rand.nextInt(yearRange);
+            String template = templates[rand.nextInt(templates.length)];
+            awards.add(String.format(template, year));
+        }
+        return awards;
+    }
 
-    // Nhà máy sản xuất
-    private static final String[] ROD_FACTORIES = {
-        "YuFeng", "Daiwa", "Shimano", "Barfilon", "MRT", "Abu Garcia"
-    };
-
-    // Chiều dài cần câu (m)
-    private static final double[] ROD_LENGTHS = {2.1, 2.4, 3.6, 4.5, 5.4, 6.3, 7.2, 8.1, 9.0, 10.0};
-
-    // Giải thưởng cần câu
-    private static final String[] ROD_AWARD_TEMPLATES = {
-        "Vô địch HHCCTTVN %d",
-        "Cần xuất sắc giải CCTV %d",
-        "Thiết kế đột phá Hoa Gia Thành %d"
-    };
+    private static List<String> generateImages(String type, String name, int count) {
+        List<String> images = new ArrayList<>();
+        Random rand = new Random();
+        for (int i = 0; i < count; i++) {
+            int randomNumber = rand.nextInt(1000); // Số ngẫu nhiên từ 0-999
+            String imageUrl = String.format(
+                    "https://yixingshop.com/images/%s/%s_%d.jpg",
+                    type.toLowerCase(),
+                    name.replace(" ", "_"),
+                    randomNumber
+            );
+            images.add(imageUrl);
+        }
+        return images;
+    }
+    // End Region: Common Utilities
 
     public static List<Item> generate(int n) {
         List<Item> items = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            if (rand.nextBoolean()) {
-                items.add(createRandomTeaPot(i));
-            } else {
-                items.add(createRandomRod(i));
-            }
+            items.add(rand.nextBoolean() ? createPremiumTeaPot(i) : createProRod(i));
         }
         return items;
     }
 
-    private static TeaPot createRandomTeaPot(int index) {
+    private static TeaPot createPremiumTeaPot(int index) {
         TeaPot tp = new TeaPot();
-        tp.setId("TP" + (index + 1));
-        tp.setName(TEAPOT_NAMES[rand.nextInt(TEAPOT_NAMES.length)]);
-        tp.setCategory("Ấm Tử Sa"); // Có thể mở rộng thêm loại
+        String name = TEAPOT_NAMES[rand.nextInt(TEAPOT_NAMES.length)];
+
+        tp.setId("TP-" + (1000 + index));
+        tp.setName(name);
+        tp.setCategory(TEAPOT_CATEGORIES[rand.nextInt(TEAPOT_CATEGORIES.length)]);
         tp.setMaterial(TEAPOT_MATERIALS[rand.nextInt(TEAPOT_MATERIALS.length)]);
-        tp.setInPrice(500000 + rand.nextInt(9500000)); // Giá nhập từ 500K đến 10 triệu
-        tp.setPrice(tp.getInPrice() * 1.5); // Giá bán = 1.5 lần giá nhập
-        tp.setYearOfRelease(2010 + rand.nextInt(15));
-        tp.setAuthorIds(generateArtistsWithRoles(rand.nextInt(3) + 1)); // 1-3 nghệ nhân
-        tp.setAwards(generateTeapotAwards(rand.nextInt(3)));
-        tp.setImages(generateImages(tp.getName().replace(" ", "_"), 2));
-        tp.setDesc(TEAPOT_DESCRIPTIONS.getOrDefault(tp.getName(), "Ấm thủ công cao cấp, chất liệu độc đáo."));
-        tp.setVolume(100 + (rand.nextInt(11) * 50)); // 100ml, 150ml, ..., 600ml
+        tp.setInPrice(5_000_000 + rand.nextInt(95_000_000)); // 5tr - 100tr
+        tp.setPrice(tp.getInPrice() * (2 + rand.nextDouble())); // Giá bán 2-3x giá nhập
+        tp.setYearOfRelease(2000 + rand.nextInt(24));
+        tp.setAuthorIds(generateArtists(rand.nextInt(5) + 3)); // 3-8 nghệ nhân
+        tp.setAwards(generateAwards(TEAPOT_AWARD_TEMPLATES, 2005, 20, rand.nextInt(4)));
+        tp.setImages(generateImages("teapot", name, 3 + rand.nextInt(3)));
+        tp.setDesc(generateTeapotDescription(tp));
+        tp.setVolume(80 + (rand.nextInt(21) * 10)); // 80ml - 280ml
+
         return tp;
     }
 
-    private static Rod createRandomRod(int index) {
+    private static String generateTeapotDescription(TeaPot tp) {
+        return String.format("%s - %s làm từ %s. %s Dung tích %.1fml, trọng lượng %dg. %s",
+                tp.getName(),
+                tp.getCategory(),
+                tp.getMaterial(),
+                "Tác phẩm nghệ thuật độc bản với",
+                tp.getVolume(), // Đã sửa thành %.1f
+                150 + rand.nextInt(300),
+                "Kèm hộp gỗ mun chạm khắc thủ công, giấy chứng nhận nguyên liệu và nghệ nhân."
+        );
+    }
+
+    private static Rod createProRod(int index) {
         Rod rod = new Rod();
-        rod.setId("RD" + (index + 1));
-        rod.setName("Cần " + ROD_NAMES[rand.nextInt(ROD_NAMES.length)]);
-        rod.setCategory(rand.nextBoolean() ? "Cần máy nước ngọt" : "Cần máy đại dương");
-        rod.setMaterial(rand.nextBoolean() ? "Carbon" : "Sợi thủy tinh");
-        rod.setInPrice(300000 + rand.nextInt(2700000)); // 300K đến 3 triệu
-        rod.setPrice(rod.getInPrice() * 1.8);
-        rod.setYearOfRelease(2020 + rand.nextInt(5));
+        String baseName = ROD_NAMES[rand.nextInt(ROD_NAMES.length)];
+
+        rod.setId("RD-" + (2000 + index));
+        rod.setName(baseName + " " + ROD_FACTORIES[rand.nextInt(ROD_FACTORIES.length)]);
+        rod.setCategory(ROD_CATEGORIES[rand.nextInt(ROD_CATEGORIES.length)]);
+        rod.setMaterial(ROD_MATERIALS[rand.nextInt(ROD_MATERIALS.length)]);
+        rod.setInPrice(1_000_000 + rand.nextInt(19_000_000)); // 1tr - 20tr
+        rod.setPrice(rod.getInPrice() * (1.5 + rand.nextDouble()));
+        rod.setYearOfRelease(2015 + rand.nextInt(10));
         rod.setAuthorIds(Collections.singletonList(ROD_FACTORIES[rand.nextInt(ROD_FACTORIES.length)]));
-        rod.setAwards(generateRodAwards(rand.nextInt(2)));
-        rod.setImages(generateImages(rod.getName().replace(" ", "_"), 2));
+        rod.setAwards(generateAwards(ROD_AWARD_TEMPLATES, 2018, 7, rand.nextInt(3)));
+        rod.setImages(generateImages("rod", baseName, 2 + rand.nextInt(2)));
         rod.setDesc(generateRodDescription(rod));
-        rod.setLength(ROD_LENGTHS[rand.nextInt(ROD_LENGTHS.length)]);
+        rod.setLength(2.1 + (0.3 * rand.nextInt(27))); // 2.1m - 10m
+
         return rod;
     }
 
-    // Helper methods
-    private static List<String> generateArtistsWithRoles(int count) {
-        List<String> artists = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            String name = ARTIST_NAMES[rand.nextInt(ARTIST_NAMES.length)];
-            String role = ARTIST_ROLES[rand.nextInt(ARTIST_ROLES.length)];
-            artists.add(name + " - " + role);
-        }
-        return artists;
-    }
-
-    private static List<String> generateTeapotAwards(int count) {
-        List<String> awards = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            int year = 2015 + rand.nextInt(10);
-            String award = String.format(
-                    TEAPOT_AWARD_TEMPLATES[rand.nextInt(TEAPOT_AWARD_TEMPLATES.length)],
-                    year
-            );
-            awards.add(award);
-        }
-        return awards;
-    }
-
-    private static List<String> generateRodAwards(int count) {
-        List<String> awards = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            int year = 2020 + rand.nextInt(5);
-            String award = String.format(
-                    ROD_AWARD_TEMPLATES[rand.nextInt(ROD_AWARD_TEMPLATES.length)],
-                    year
-            );
-            awards.add(award);
-        }
-        return awards;
-    }
-
-    private static List<String> generateImages(String prefix, int count) {
-        List<String> images = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            images.add(String.format(
-                    "https://yixingshop.com/images/%s_%d.jpg",
-                    prefix.toLowerCase(),
-                    i + 1
-            ));
-        }
-        return images;
-    }
-
     private static String generateRodDescription(Rod rod) {
-        return String.format(
-                "%s sản xuất bởi %s, dài %.1fm. Chất liệu %s bền bỉ, chịu lực tốt. %s",
+        return String.format("%s - %s chất liệu %s. %s Chiều dài %.1fm, trọng lượng %dg, tải trọng tối đa %dkg. %s",
                 rod.getName(),
-                rod.getAuthorIds().get(0),
-                rod.getLength(),
+                rod.getCategory(),
                 rod.getMaterial(),
-                rod.getCategory().contains("đại dương") ? "Thiết kế chống mặn, phù hợp câu biển." : "Thích hợp câu nước ngọt."
+                rod.getCategory().contains("đại dương") ? "Thiết kế kháng mặn với khoen Fuji SiC" : "Khoen dẫn dây ceramic siêu nhẹ",
+                rod.getLength(),
+                120 + rand.nextInt(280),
+                5 + rand.nextInt(25),
+                "Tay cầm EVA cao cấp, kèm túi đựng chống nước và phiếu bảo hành 5 năm."
         );
     }
 }
