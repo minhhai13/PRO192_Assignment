@@ -2,6 +2,7 @@ package view;
 
 import model.*;
 import controller.ItemList;
+import controller.Utils;
 import java.util.List;
 import java.util.Scanner;
 
@@ -29,9 +30,7 @@ public class YixingShop {
             System.out.println("8. Load data from file");
             System.out.println("9. Save data to file");
             System.out.println("10. Exit program");
-            System.out.print("Choose: ");
-            choice = sc.nextInt();
-            sc.nextLine();
+            choice = Utils.inputChoice("Choose: ");
 
             switch (choice) {
                 case 1:
@@ -49,16 +48,16 @@ public class YixingShop {
                 case 3:
                     System.out.println("\nList of available products:");
                     System.out.println(String.format(
-                            "%-8s | %-22s | %-17s | %-17s | %15s | %15s | %6s | %-27s | %-8s | %-50s",
-                            "ID", "Name", "Category", "Material", "In Price", "Price", "Year", "Author/Factory", "Vol/Len", "Description"
+                            "%-8s | %-22s | %-17s | %-17s | %15s | %15s | %-8s | %-27s | %6s | %-27s | %-27s | %-50s",
+                            "ID", "Name", "Category", "Material", "In Price (VND)", "Price (VND)", "Vol/Len", "Author/Factory", "Year", "Awards", "Images", "Description"
                     ));
-                    System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                    System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
                     for (Item item : itemList) {
                         if (item instanceof TeaPot) {
-                            System.out.println(((TeaPot) item).toTableRow());
+                            System.out.println(((TeaPot) item));
                         } else if (item instanceof Rod) {
-                            System.out.println(((Rod) item).toTableRow());
+                            System.out.println(((Rod) item));
                         }
                     }
                     System.out.println();
@@ -77,24 +76,33 @@ public class YixingShop {
                             + "1. Tea Pot (Search by Artisan ID)\n"
                             + "2. Rod (Search by Factory Name)");
                     try {
-                        int productType = Integer.parseInt(sc.nextLine().trim());
+                        int productType = Utils.inputProductType("Input choice (1 or 2): ");
                         switch (productType) {
                             case 1:
-                                System.out.print("Enter Artisan ID: ");
-                                String authorId = sc.nextLine().trim();
+//                                System.out.print("Enter Artisan ID: ");
+                                String authorId = Utils.inputNonEmptyString("Enter Artisan ID: ");
                                 List<Item> teaResults = itemList.searchByAuthor(authorId);
                                 System.out.println("Search results for Artisan ID " + authorId + ":");
+                                System.out.println(String.format(
+                                        "%-8s | %-22s | %-17s | %-17s | %15s | %15s | %6s | %-27s | %-8s | %-50s",
+                                        "ID", "Name", "Category", "Material", "In Price", "Price", "Year", "Author/Factory", "Vol/Len", "Description"
+                                ));
+                                System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                                 for (Item item : teaResults) {
-                                    System.out.println(item);
+                                    System.out.println(((TeaPot) item));
                                 }
                                 break;
                             case 2:
-                                System.out.print("Enter Factory Name: ");
-                                String factoryName = sc.nextLine().trim();
+                                String factoryName = Utils.inputNonEmptyString("Enter Factory Name: ");
                                 List<Item> rodResults = itemList.searchByFactory(factoryName);
                                 System.out.println("Search results for Factory " + factoryName + ":");
+                                System.out.println(String.format(
+                                        "%-8s | %-22s | %-17s | %-17s | %15s | %15s | %6s | %-27s | %-8s | %-50s",
+                                        "ID", "Name", "Category", "Material", "In Price", "Price", "Year", "Author/Factory", "Vol/Len", "Description"
+                                ));
+                                System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                                 for (Item item : rodResults) {
-                                    System.out.println(item);
+                                    System.out.println(((Rod) item));
                                 }
                                 break;
                             default:
@@ -107,18 +115,15 @@ public class YixingShop {
                     break;
 
                 case 7:
-                    System.out.print("Enter the product ID to update: ");
-                    String id = sc.nextLine();
+                    String id = Utils.inputNonEmptyString("Enter the product ID to update: ");
                     itemList.updateItemById(id, sc);
                     break;
                 case 8:
-                    System.out.print("Enter the filename to load data: ");
-                    String loadFile = sc.nextLine();
+                    String loadFile = Utils.inputNonEmptyString("Enter the filename to load data: ");
                     itemList.loadDataFromFile(loadFile);
                     break;
                 case 9:
-                    System.out.print("Enter the filename to save data: ");
-                    String saveFile = sc.nextLine();
+                    String saveFile = Utils.inputNonEmptyString("Enter the filename to save data: ");
                     itemList.saveDataToFile(saveFile);
                     break;
                 case 10:
