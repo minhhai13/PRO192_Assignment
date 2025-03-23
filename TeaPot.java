@@ -26,18 +26,21 @@ public class TeaPot extends Item {
         this.volume = volume;
     }
 
-    public String toTableRow() {
+    @Override
+    public String toString() {
         return String.format(
-                "%-8s | %-22s | %-17s | %-17s | %15s | %15s | %6d | %-27s | %-8s | %-50s",
+                "%-8s | %-22s | %-17s | %-17s | %15s | %15s | %-8s | %-27s | %6s | %-27s | %-27s | %-50s",
                 id,
                 Utils.limitLength(name, 22),
                 Utils.limitLength(category, 17),
                 Utils.limitLength(material, 17),
                 Utils.formatCurrency(inPrice),
                 Utils.formatCurrency(price),
-                yearOfRelease,
+                String.format("%.1fm", volume),
                 Utils.limitLength(String.join(", ", authorIds), 27),
-                String.format("%.1fml", volume),
+                yearOfRelease,              
+                Utils.limitLength(String.join(", ", awards), 27),
+                Utils.limitLength(String.join(", ", images), 27),
                 Utils.limitLength(desc, 50)
         );
     }
@@ -53,17 +56,9 @@ public class TeaPot extends Item {
         price = Utils.inputPositiveDouble("Enter sale price: ");
         volume = Utils.inputPositiveDouble("Enter volume (in militers): ");
         yearOfRelease = Utils.inputYear("Enter year of release: ");
-
-        // Input author IDs
         authorIds = Utils.inputStringList("author IDs");
-
-        // Input awards
         awards = Utils.inputStringList("awards");
-
-        // Input image links
         images = Utils.inputStringList("image links");
-
-        // Input product description
         desc = Utils.inputNonEmptyString("Enter product description: ");
     }
 
