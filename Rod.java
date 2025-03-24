@@ -1,6 +1,6 @@
 package model;
 
-import controller.Utils;
+import utils.Utils;
 import java.util.*;
 
 public class Rod extends Item {
@@ -48,7 +48,7 @@ public class Rod extends Item {
     @Override
     public void input() {
 
-        name = Utils.inputNonEmptyString("Enter product name: ");
+        name = Utils.inputUniqueId("Enter product name: ");
         category = Utils.inputNonEmptyString("Enter product category: ");
         material = Utils.inputNonEmptyString("Enter material: ");
         inPrice = Utils.inputPositiveInteger("Enter cost price: ");

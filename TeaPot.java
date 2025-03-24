@@ -1,6 +1,6 @@
 package model;
 
-import controller.Utils;
+import utils.Utils;
 import java.util.*;
 
 public class TeaPot extends Item {
@@ -48,7 +48,7 @@ public class TeaPot extends Item {
     @Override
     public void input() {
 
-        id = Utils.inputNonEmptyString("Enter product ID: ");
+        id = Utils.inputUniqueId("Enter product ID: ");
         name = Utils.inputNonEmptyString("Enter product name: ");
         category = Utils.inputNonEmptyString("Enter product category: ");
         material = Utils.inputNonEmptyString("Enter material: ");
