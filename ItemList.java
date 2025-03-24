@@ -28,37 +28,60 @@ public class ItemList extends ArrayList<Item> {
         this.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
     }
 
-    // Tìm kiếm sản phẩm theo tên nghệ nhân/nhà máy (kiểm tra nếu chuỗi tìm kiếm nằm trong bất kỳ phần tử nào của authorIds)
-    public List<Item> searchByAuthor(String author) {
-        List<Item> results = new ArrayList<>();
-        for (Item item : this) {
-            if (item instanceof TeaPot) {
-                TeaPot teapot = (TeaPot) item;
-                for (String auth : teapot.getAuthorIds()) {
-                    if (auth.equalsIgnoreCase(author)) {
-                        results.add(item);
-                        break;
+    public void searchByAuthor() {
+        System.out.println("\nWhich product type do you want to search for?\n"
+                + "1. Tea Pot (Search by Artisan ID)\n"
+                + "2. Rod (Search by Factory Name)");
+        try {
+            int productType = Utils.inputProductType("Input choice (1 or 2): ");
+            switch (productType) {
+                case 1:
+                    String artisanId = Utils.inputNonEmptyString("Enter Artisan ID: ");
+                    System.out.println("Search results for Artisan ID " + artisanId + ":");
+                    System.out.println(String.format(
+                            "%-8s | %-22s | %-17s | %-17s | %15s | %15s | %6s | %-27s | %-8s | %-50s",
+                            "ID", "Name", "Category", "Material", "In Price", "Price", "Year", "Author/Factory", "Vol/Len", "Description"
+                    ));
+                    System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                    for (Item item : this) {
+                        if (item instanceof TeaPot) {
+                            TeaPot teapot = (TeaPot) item;
+                            for (String auth : teapot.getAuthorIds()) {
+                                if (auth.equalsIgnoreCase(artisanId)) {
+                                    System.out.println((TeaPot) item);
+                                    break;
+                                }
+                            }
+                        }
                     }
-                }
-            }
-        }
-        return results;
-    }
-
-    public List<Item> searchByFactory(String factoryName) {
-        List<Item> results = new ArrayList<>();
-        for (Item item : this) {
-            if (item instanceof Rod) { // Chỉ Rod mới có authorIds là tên nhà máy
-                Rod rod = (Rod) item;
-                for (String factory : rod.getAuthorIds()) {
-                    if (factory.equalsIgnoreCase(factoryName)) {
-                        results.add(rod);
-                        break;
+                    break;
+                case 2:
+                    String factoryName = Utils.inputNonEmptyString("Enter Factory Name: ");
+                    System.out.println("Search results for Factory " + factoryName + ":");
+                    System.out.println(String.format(
+                            "%-8s | %-22s | %-17s | %-17s | %15s | %15s | %6s | %-27s | %-8s | %-50s",
+                            "ID", "Name", "Category", "Material", "In Price", "Price", "Year", "Author/Factory", "Vol/Len", "Description"
+                    ));
+                    System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                    for (Item item : this) {
+                        if (item instanceof Rod) {
+                            Rod rod = (Rod) item;
+                            for (String factory : rod.getAuthorIds()) {
+                                if (factory.equalsIgnoreCase(factoryName)) {
+                                    System.out.println((Rod) item);
+                                    break;
+                                }
+                            }
+                        }
                     }
-                }
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+                    break;
             }
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter 1 or 2 to select a product type!");
         }
-        return results;
     }
 
     // Cập nhật thông tin sản phẩm theo Id
@@ -202,4 +225,5 @@ public class ItemList extends ArrayList<Item> {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
 }

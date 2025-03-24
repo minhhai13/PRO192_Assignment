@@ -7,6 +7,9 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import model.Item;
+import model.Rod;
+import model.TeaPot;
 
 public class Utils {
 
@@ -92,6 +95,7 @@ public class Utils {
             }
         }
     }
+
     // Input choice 1 or 2 in Search
     public static int inputProductType(String message) {
         int productType;
@@ -108,8 +112,8 @@ public class Utils {
             }
         }
     }
-    
-     // Input choice
+
+    // Input choice
     public static int inputChoice(String message) {
         int choice;
         while (true) {
@@ -125,8 +129,6 @@ public class Utils {
             }
         }
     }
-    
-    
 
     // Input a list of strings
     public static List<String> inputStringList(String message) {
@@ -137,6 +139,23 @@ public class Utils {
             list.add(item);
         }
         return list;
+    }
+
+    public static void listProducts(ArrayList<Item> itemList) {
+        System.out.println(String.format(
+                "%-8s | %-22s | %-17s | %-17s | %15s | %15s | %-8s | %-27s | %6s | %-27s | %-27s | %-50s",
+                "ID", "Name", "Category", "Material", "In Price (VND)", "Price (VND)", "Vol/Len", "Author/Factory", "Year", "Awards", "Images", "Description"
+        ));
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+        for (Item item : itemList) {
+            if (item instanceof TeaPot) {
+                System.out.println(((TeaPot) item));
+            } else if (item instanceof Rod) {
+                System.out.println(((Rod) item));
+            }
+        }
+        System.out.println();
     }
 
     public static String limitLength(String str, int maxLength) {
