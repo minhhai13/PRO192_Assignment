@@ -1,5 +1,6 @@
 package controller;
 
+import utils.Utils;
 import model.*;
 
 import java.io.*;
@@ -7,27 +8,41 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ItemList extends ArrayList<Item> {
+    
+    // Biến static để lưu trữ instance hiện tại
+    private static ItemList currentInstance;
 
     public ItemList() {
         super();
         this.addAll(RandomItemGenerator.generate(50));
+        currentInstance = this; // Gán instance hiện tại khi khởi tạo
     }
 
-    // Thêm 1 sản phẩm vào danh sách
+    // Getter để Utils truy cập
+    public static ItemList getCurrentInstance() {
+        return currentInstance;
+    }
+
+    // Add new item
     public void addItem(Item item) {
         this.add(item);
     }
+    
+    public boolean checkExists(String id) {
+        return this.stream().anyMatch(item -> item.getId().equalsIgnoreCase(id));
+    }
 
-    // Sắp xếp theo Price giảm dần
+    // Sort by price (descending)
     public void sortItemsByPrice() {
         this.sort((a, b) -> Double.compare(b.getPrice(), a.getPrice()));
     }
 
-    // Sắp xếp theo tên tăng dần (A-Z)
+    // Sort by name ascending (A-Z)
     public void sortItemsByName() {
         this.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
     }
 
+    // Search by AuthorIDs or FactoryName
     public void searchByAuthor() {
         System.out.println("\nWhich product type do you want to search for?\n"
                 + "1. Tea Pot (Search by Artisan ID)\n"
@@ -84,7 +99,7 @@ public class ItemList extends ArrayList<Item> {
         }
     }
 
-    // Cập nhật thông tin sản phẩm theo Id
+    // Update item
     public void updateItemById(String id, Scanner sc) {
         boolean found = false;
         for (Item item : this) {
@@ -111,78 +126,90 @@ public class ItemList extends ArrayList<Item> {
         }
     }
 
-    // Nạp dữ liệu từ file
+    // Load data from file
     public void loadDataFromFile(String filename) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             this.clear(); // Xóa danh sách hiện tại
             String line;
+            int lineNumber = 0;
+
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
+                lineNumber++;
+                if (line.trim().isEmpty()) {
+                    continue; // Bỏ qua dòng trống
+                }
+                String[] parts = line.split(",", -1); // -1 để giữ các field rỗng
                 if (parts.length < 13) {
-                    System.out.println("Invalid line: " + line);
+                    System.err.println(String.format("Line %d: Invalid format - insufficient fields: %s",
+                            lineNumber, line));
                     continue;
                 }
-                String type = parts[0];
-                try {
-                    if ("TeaPot".equals(type)) {
-                        TeaPot tp = new TeaPot();
-                        tp.setId(parts[1]);
-                        tp.setName(parts[2]);
-                        tp.setCategory(parts[3]);
-                        tp.setMaterial(parts[4]);
-                        tp.setInPrice(Double.parseDouble(parts[5]));
-                        tp.setPrice(Double.parseDouble(parts[6]));
-                        tp.setYearOfRelease(Integer.parseInt(parts[7]));
-                        // Xử lý danh sách awards và images
-                        tp.setAwards(Arrays.stream(parts[8].split(";")).filter(s -> !s.isEmpty()).collect(Collectors.toList()));
-                        tp.setImages(Arrays.stream(parts[9].split(";")).filter(s -> !s.isEmpty()).collect(Collectors.toList()));
-                        tp.setDesc(parts[10]);
-                        tp.setVolume(Integer.parseInt(parts[11]));
-                        // Xử lý danh sách authorIds (kiểu Integer)
-                        tp.setAuthorIds(Arrays.stream(parts[12].split(";"))
-                                .filter(s -> !s.isEmpty())
-                                .collect(Collectors.toList()));
 
-                        this.add(tp);
+                String type = parts[0].trim();
+                try {
+                    String id = parts[1].trim();
+                    String name = parts[2].trim();
+                    String category = parts[3].trim();
+                    String material = parts[4].trim();
+                    double inPrice = Double.parseDouble(parts[5].trim());
+                    double price = Double.parseDouble(parts[6].trim());
+                    int yearOfRelease = Integer.parseInt(parts[7].trim());
+
+                    // Xử lý danh sách phân cách bởi semicolon
+                    List<String> awards = parts[8].trim().isEmpty() ? new ArrayList<>()
+                            : Arrays.stream(parts[8].split(";"))
+                                    .map(String::trim)
+                                    .filter(s -> !s.isEmpty())
+                                    .collect(Collectors.toList());
+                    List<String> images = parts[9].trim().isEmpty() ? new ArrayList<>()
+                            : Arrays.stream(parts[9].split(";"))
+                                    .map(String::trim)
+                                    .filter(s -> !s.isEmpty())
+                                    .collect(Collectors.toList());
+                    String desc = parts[10].trim(); // Không cần xử lý thêm vì save đã thay dấu phẩy
+                    double volumeOrLength = Double.parseDouble(parts[11].trim()); // Volume hoặc Length
+                    List<String> authorIds = parts[12].trim().isEmpty() ? new ArrayList<>()
+                            : Arrays.stream(parts[12].split(";"))
+                                    .map(String::trim)
+                                    .filter(s -> !s.isEmpty())
+                                    .collect(Collectors.toList());
+
+                    Item item;
+                    if ("TeaPot".equals(type)) {
+                        item = new TeaPot(id, name, category, material, inPrice, price,
+                                volumeOrLength, authorIds, yearOfRelease, awards, images, desc);
                     } else if ("Rod".equals(type)) {
-                        Rod rod = new Rod();
-                        rod.setId(parts[1]);
-                        rod.setName(parts[2]);
-                        rod.setCategory(parts[3]);
-                        rod.setMaterial(parts[4]);
-                        rod.setInPrice(Double.parseDouble(parts[5]));
-                        rod.setPrice(Double.parseDouble(parts[6]));
-                        rod.setYearOfRelease(Integer.parseInt(parts[7]));
-                        // Xử lý danh sách awards và images
-                        rod.setAwards(Arrays.stream(parts[8].split(";")).filter(s -> !s.isEmpty()).collect(Collectors.toList()));
-                        rod.setImages(Arrays.stream(parts[9].split(";")).filter(s -> !s.isEmpty()).collect(Collectors.toList()));
-                        rod.setDesc(parts[10]);
-                        rod.setLength(Double.parseDouble(parts[11]));
-                        // Xử lý danh sách authorIds (kiểu String)
-                        rod.setAuthorIds(Arrays.stream(parts[12].split(";"))
-                                .filter(s -> !s.isEmpty())
-                                .collect(Collectors.toList()));
-                        this.add(rod);
+                        item = new Rod(id, name, category, material, inPrice, price,
+                                volumeOrLength, authorIds, yearOfRelease, awards, images, desc);
                     } else {
-                        System.out.println("Invalid product type: " + type);
+                        System.err.println(String.format("Line %d: Unknown item type: %s",
+                                lineNumber, type));
+                        continue;
                     }
+                    this.add(item);
                 } catch (NumberFormatException e) {
-                    System.out.println("Number format error at line: " + line);
+                    System.err.println(String.format("Line %d: Number format error: %s - %s",
+                            lineNumber, line, e.getMessage()));
+                } catch (Exception e) {
+                    System.err.println(String.format("Line %d: Error parsing line: %s - %s",
+                            lineNumber, line, e.getMessage()));
                 }
             }
+            System.out.println("Data loaded successfully! Total items: " + this.size());
         } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + filename);
+            System.err.println("File not found: " + filename);
         } catch (IOException e) {
-            System.out.println("File reading error: " + e.getMessage());
+            System.err.println("Error reading file " + filename + ": " + e.getMessage());
         }
     }
 
-    // Ghi dữ liệu ra file
+    // Save data to file
     public void saveDataToFile(String filename) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (Item item : this) {
                 if (item instanceof TeaPot) {
                     TeaPot tp = (TeaPot) item;
+                    String desc = tp.getDesc().replace(",", ";"); // Thay dấu phẩy trong desc bằng chấm phẩy
                     String line = String.join(",",
                             "TeaPot",
                             tp.getId(),
@@ -194,7 +221,7 @@ public class ItemList extends ArrayList<Item> {
                             String.valueOf(tp.getYearOfRelease()),
                             String.join(";", tp.getAwards()),
                             String.join(";", tp.getImages()),
-                            tp.getDesc(),
+                            desc, // Sử dụng desc đã thay thế
                             String.valueOf(tp.getVolume()),
                             tp.getAuthorIds().stream().map(String::valueOf).collect(Collectors.joining(";"))
                     );
@@ -202,6 +229,7 @@ public class ItemList extends ArrayList<Item> {
                     writer.newLine();
                 } else if (item instanceof Rod) {
                     Rod rod = (Rod) item;
+                    String desc = rod.getDesc().replace(",", ";"); // Thay dấu phẩy trong desc bằng chấm phẩy
                     String line = String.join(",",
                             "Rod",
                             rod.getId(),
@@ -213,7 +241,7 @@ public class ItemList extends ArrayList<Item> {
                             String.valueOf(rod.getYearOfRelease()),
                             String.join(";", rod.getAwards()),
                             String.join(";", rod.getImages()),
-                            rod.getDesc(),
+                            desc, // Sử dụng desc đã thay thế
                             String.valueOf(rod.getLength()),
                             String.join(";", rod.getAuthorIds())
                     );
@@ -221,9 +249,12 @@ public class ItemList extends ArrayList<Item> {
                     writer.newLine();
                 }
             }
+            System.out.println("Data saved successfully to " + filename);
         } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Error writing to file " + filename + ": " + e.getMessage());
         }
     }
+
+
 
 }
