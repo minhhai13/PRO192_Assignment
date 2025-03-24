@@ -47,20 +47,7 @@ public class YixingShop {
                     break;
                 case 3:
                     System.out.println("\nList of available products:");
-                    System.out.println(String.format(
-                            "%-8s | %-22s | %-17s | %-17s | %15s | %15s | %-8s | %-27s | %6s | %-27s | %-27s | %-50s",
-                            "ID", "Name", "Category", "Material", "In Price (VND)", "Price (VND)", "Vol/Len", "Author/Factory", "Year", "Awards", "Images", "Description"
-                    ));
-                    System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-
-                    for (Item item : itemList) {
-                        if (item instanceof TeaPot) {
-                            System.out.println(((TeaPot) item));
-                        } else if (item instanceof Rod) {
-                            System.out.println(((Rod) item));
-                        }
-                    }
-                    System.out.println();
+                    Utils.listProducts(itemList);
                     break;
                 case 4:
                     itemList.sortItemsByPrice();
@@ -72,46 +59,7 @@ public class YixingShop {
                     break;
                 case 6:
                     System.out.print("Search for products by artisan/factory name ");
-                    System.out.println("\nWhich product type do you want to search for?\n"
-                            + "1. Tea Pot (Search by Artisan ID)\n"
-                            + "2. Rod (Search by Factory Name)");
-                    try {
-                        int productType = Utils.inputProductType("Input choice (1 or 2): ");
-                        switch (productType) {
-                            case 1:
-//                                System.out.print("Enter Artisan ID: ");
-                                String authorId = Utils.inputNonEmptyString("Enter Artisan ID: ");
-                                List<Item> teaResults = itemList.searchByAuthor(authorId);
-                                System.out.println("Search results for Artisan ID " + authorId + ":");
-                                System.out.println(String.format(
-                                        "%-8s | %-22s | %-17s | %-17s | %15s | %15s | %6s | %-27s | %-8s | %-50s",
-                                        "ID", "Name", "Category", "Material", "In Price", "Price", "Year", "Author/Factory", "Vol/Len", "Description"
-                                ));
-                                System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                                for (Item item : teaResults) {
-                                    System.out.println(((TeaPot) item));
-                                }
-                                break;
-                            case 2:
-                                String factoryName = Utils.inputNonEmptyString("Enter Factory Name: ");
-                                List<Item> rodResults = itemList.searchByFactory(factoryName);
-                                System.out.println("Search results for Factory " + factoryName + ":");
-                                System.out.println(String.format(
-                                        "%-8s | %-22s | %-17s | %-17s | %15s | %15s | %6s | %-27s | %-8s | %-50s",
-                                        "ID", "Name", "Category", "Material", "In Price", "Price", "Year", "Author/Factory", "Vol/Len", "Description"
-                                ));
-                                System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                                for (Item item : rodResults) {
-                                    System.out.println(((Rod) item));
-                                }
-                                break;
-                            default:
-                                System.out.println("Invalid choice!");
-                                break;
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Please enter 1 or 2 to select a product type!");
-                    }
+                    itemList.searchByAuthor();
                     break;
 
                 case 7:
